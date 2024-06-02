@@ -1,0 +1,95 @@
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;background: rgb(23,18,62);
+    background-image: linear-gradient(to right top, #171c23, #1e282c, #293333, #373e3a, #474943);
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: white;
+    width: 100%;
+
+}
+.container {
+
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+    animation: fadeIn 1s ease-out;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+h1 {
+    text-align: center;
+    font-size: 40px;
+}
+
+form div {
+    margin-bottom: 1rem;
+    width: 35%;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.invalid-feedback {
+    font-size: 18px; 
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 24px;
+}
+input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s;
+}
+input:focus {
+    border-color: #6a11cb;
+    outline: none;
+}
+
+button {
+    width: 28%;
+    padding: 0.75rem;
+    background: #6a11cb;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.but{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    
+    justify-content: center;
+}
+.butto{
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #3b6ec6;
+}
