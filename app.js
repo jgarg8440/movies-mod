@@ -18,7 +18,7 @@ const User = require("./models/user.js");
 const Listing = require("./models/listing.js"); 
 require('dotenv').config();
 
-const dburl = process.env.Atlas_url;
+const dburl = "mongodb+srv://jgarg8440:SQgFJq8XGKIySBSr@moviesdb.afwje0i.mongodb.net/?retryWrites=true&w=majority&appName=moviesdb";
 
 main()
   .then(() => {
