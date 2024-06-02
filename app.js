@@ -28,8 +28,6 @@ async function main() {
   await mongoose.connect(dburl);
 }
 
-
-
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "/public")));
@@ -47,10 +45,9 @@ const store = MongoStore.create({
   mongoUrl: dburl,
   crypto: {
     secret: process.env.SECRET,
-     touchAfter: 24 * 3600,
+    touchAfter: 24 * 3600,
   }
 });
-
 
 app.use(session({
   store,
@@ -93,7 +90,6 @@ app.get('/listing', async (req, res) => {
   }
 });
 
-
 app.post("/addMovieToListing", async (req, res) => {
   const { title, year, writer, actors, poster } = req.body; 
   try {
@@ -106,7 +102,6 @@ app.post("/addMovieToListing", async (req, res) => {
   }
 });
 
-
 app.post("/deleteMovieFromListing", async (req, res) => {
   const { movieId } = req.body;
   try {
@@ -114,7 +109,7 @@ app.post("/deleteMovieFromListing", async (req, res) => {
     if (!deletedMovie) {
       return res.status(404).json({ message: 'Movie not found.' });
     }
-     res.redirect("/listing");
+    res.redirect("/listing");
   } catch (error) {
     console.error('Error deleting movie from listing:', error);
     res.status(500).send("An error occurred while deleting the movie from the listing.");
@@ -133,11 +128,11 @@ app.get('/public-listing', async (req, res) => {
 });
 
 app.get('/check-authentication', (req, res) => {
-    if (req.isAuthenticated()) {
-        res.status(200).send('Authenticated');
-    } else {
-        res.status(401).send('Not authenticated');
-    }
+  if (req.isAuthenticated()) {
+    res.status(200).send('Authenticated');
+  } else {
+    res.status(401).send('Not authenticated');
+  }
 });
 
 app.get('/private-listing', (req, res) => {
@@ -147,9 +142,6 @@ app.get('/private-listing', (req, res) => {
     res.redirect('public-listing'); 
   }
 });
-
-
-
 
 app.get("/signup", (req, res) => {
   res.render("signup");
@@ -181,7 +173,7 @@ app.get("/logout", (req, res, next) => {
       return next(err);
     }
     res.redirect("/login");
-  })
+  });
 });
 
 app.listen(3000, () => {
