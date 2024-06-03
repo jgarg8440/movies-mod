@@ -1,15 +1,19 @@
-
 const movieSearchBox = document.getElementById('movie-search-box');
 const searchList = document.getElementById('search-list');
 const resultGrid = document.getElementById('result-grid');
 
 // load movies from API
 async function loadMovies(searchTerm){
-    const URL = `https://omdbapi.com/?s=${searchTerm}&page=1&apikey=1a20ca3e`;
-    const res = await fetch(`${URL}`);
-    const data = await res.json();
-    // console.log(data.Search);
-    if(data.Response == "True") displayMovieList(data.Search);
+    const URL = `https://www.omdbapi.com/?s=${searchTerm}&page=1&apikey=1a20ca3e`;
+    try {
+        const res = await fetch(URL);
+        if (!res.ok) throw new Error('Network response was not ok');
+        const data = await res.json();
+        console.log('Response data:', data);
+        if(data.Response == "True") displayMovieList(data.Search);
+    } catch (error) {
+        console.error('Failed to fetch movies:', error);
+    }
 }
 
 function findMovies(){
@@ -28,10 +32,7 @@ function displayMovieList(movies){
         let movieListItem = document.createElement('div');
         movieListItem.dataset.id = movies[idx].imdbID; 
         movieListItem.classList.add('search-list-item');
-        if(movies[idx].Poster != "N/A")
-            moviePoster = movies[idx].Poster;
-        else 
-            moviePoster = "image_not_found.png";
+        let moviePoster = (movies[idx].Poster != "N/A") ? movies[idx].Poster : "image_not_found.png";
 
         movieListItem.innerHTML = `
         <div class = "search-item-thumbnail">
@@ -51,13 +52,17 @@ function loadMovieDetails(){
     const searchListMovies = searchList.querySelectorAll('.search-list-item');
     searchListMovies.forEach(movie => {
         movie.addEventListener('click', async () => {
-            // console.log(movie.dataset.id);
             searchList.classList.add('hide-search-list');
             movieSearchBox.value = "";
-            const result = await fetch(`http://www.omdbapi.com/?i=${movie.dataset.id}&apikey=1a20ca3e`);
-            const movieDetails = await result.json();
-            // console.log(movieDetails);
-            displayMovieDetails(movieDetails);
+            const URL = `https://www.omdbapi.com/?i=${movie.dataset.id}&apikey=1a20ca3e`;
+            try {
+                const res = await fetch(URL);
+                if (!res.ok) throw new Error('Network response was not ok');
+                const movieDetails = await res.json();
+                displayMovieDetails(movieDetails);
+            } catch (error) {
+                console.error('Failed to fetch movie details:', error);
+            }
         });
     });
 }
@@ -90,10 +95,7 @@ function displayMovieDetails(details){
         </div>
     `;
     
-    // Get the button element
     const addButton = document.querySelector('.add-to-listing');
-    
-    // Apply styles to the button
     addButton.style.backgroundColor = '#007bff'; 
     addButton.style.color = '#fff';
     addButton.style.border = 'none'; 
@@ -103,23 +105,17 @@ function displayMovieDetails(details){
     addButton.style.cursor = 'pointer'; 
     addButton.style.fontSize = '16px'; 
     
-    // Add hover effect
     addButton.addEventListener('mouseover', () => {
         addButton.style.backgroundColor = '#0056b3'; 
     });
     
-    // Restore original style on mouseout
     addButton.addEventListener('mouseout', () => {
         addButton.style.backgroundColor = '#007bff'; 
     });
 
-    // Call the function to handle the button click event
     loadAddToListingButton();
 }
 
-
-
-// Add event listener for the "Add to Listing" button
 function loadAddToListingButton() {
     const addButton = document.querySelector('.add-to-listing');
     addButton.addEventListener('click', async () => {
@@ -142,17 +138,13 @@ async function addMovieToListing(movieId, title, year, writer, actors, poster) {
             },
             body: JSON.stringify({ movieId, title, year, writer, actors, poster })
         });
+        if (!res.ok) throw new Error('Network response was not ok');
         const data = await res.json();
-
         console.log(data);
     } catch (error) {
         console.error('Error adding movie to listing:', error);
     }
 }
-
-
-
-
 
 window.addEventListener('click', (event) => {
     if(event.target.className != "form-control"){
